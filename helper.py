@@ -15,14 +15,16 @@ def plot_dataset(df_train):
     plt.tight_layout()
     plt.show()
 
-def plot_performance(PnL):
-    # Plot Performance
+def plot_performance(PnL, dates):
     plt.figure(figsize=(12, 6))
-    plt.plot(PnL, label="Portfolio Value", color="blue")
-    plt.xlabel("Time")
+    plt.plot(dates, PnL, label="Portfolio Value", color="blue")
+    plt.xlabel("Date")
     plt.ylabel("Balance ($)")
     plt.title("Backtest Performance")
     plt.legend()
+    plt.grid(True)
+    plt.xticks(rotation=45)  # Rotate x-axis for better readability
+    plt.tight_layout()
     plt.show()
 
 def compute_indicators(df, time_range, price_col="price", volume_col="quantity", save_path=None):
