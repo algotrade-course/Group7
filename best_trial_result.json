@@ -1,0 +1,10 @@
+{
+    "value": 0.014838635780793847,
+    "params": {
+        "sma_window": 64,
+        "tp_mean_rev": 10.0,
+        "tp_momentum": 12.0,
+        "sl_mean_rev": 6.5,
+        "sl_momentum": 7.5
+    }
+}

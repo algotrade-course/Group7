@@ -1,8 +1,8 @@
 import pandas as pd
 import os
+import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
-
 
 def plot_dataset(df_train):
     plt.figure(figsize=(12, 6))
@@ -18,7 +18,6 @@ def plot_dataset(df_train):
     plt.tight_layout()
     plt.show()
 
-
 def plot_performance(PnL, dates):
     plt.figure(figsize=(12, 6))
     plt.plot(dates, PnL, label="Portfolio Value", color="blue")
@@ -33,6 +32,32 @@ def plot_performance(PnL, dates):
     plt.tight_layout()
     plt.show()
 
+def plot_comparison(results1, results2, dates):
+    PnL_before = results1["PnL Over Time"]
+    PnL_after = results2["PnL Over Time"]
+    labels=("Before Tuning", "After Tuning")
+
+    min_len = min(len(PnL_before), len(PnL_after))
+
+    PnL_before = PnL_before[:min_len]
+    PnL_after = PnL_after[:min_len]
+    dates = dates[:min_len]
+
+    plt.figure(figsize=(12, 6))
+        
+    plt.plot(dates, PnL_before, label=labels[0], color="red")
+    plt.plot(dates, PnL_after, label=labels[1], color="blue")
+
+    plt.xlabel("Date")
+    plt.ylabel("Balance (VND)")
+    plt.title("Backtest Performance Comparison")
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(rotation=45)
+    formatter = FuncFormatter(lambda x, _: f"{x:,.0f}")
+    plt.gca().yaxis.set_major_formatter(formatter)
+    plt.tight_layout()
+    plt.show()
 
 def compute_indicators(df, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])
@@ -67,3 +92,18 @@ def compute_indicators(df, time_range, price_col="price", volume_col="quantity",
             print(f"File '{save_path}' already exists.")
 
     return df_train
+
+def base_param_reset():
+    base_result = {
+            "value": None,  # You can optionally include a baseline Sharpe ratio here
+            "params": {
+                "sma_window": 50,
+                "tp_mean_rev": 5,
+                "tp_momentum": 10,
+                "sl_mean_rev": 5,
+                "sl_momentum": 4
+            }
+        }
+
+    with open("original_params.json", "w") as f:
+        json.dump(base_result, f, indent=4)

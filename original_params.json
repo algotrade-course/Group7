@@ -1,0 +1,10 @@
+{
+    "value": null,
+    "params": {
+        "sma_window": 50,
+        "tp_mean_rev": 5,
+        "tp_momentum": 10,
+        "sl_mean_rev": 5,
+        "sl_momentum": 4
+    }
+}
