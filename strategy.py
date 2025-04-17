@@ -9,12 +9,18 @@ def strategy(
     CUT_LOSS_THRES_MEAN_REVERSION,
     CUT_LOSS_THRES_MOMENTUM,
     initial_balance,
-    contract_size,
     price_col="price",
     volume_col="quantity",
     BB_BOUND=0.02,
     VOLUME=1.5,
+    margin_ratio=0.175,
+    ar_ratio=0.8,
+    multiplier=100000,
+    point_fee=0.47,
 ):
+    # Realistic deposit required for 1 contract
+    contract_margin = multiplier * margin_ratio
+    required_deposit = contract_margin / ar_ratio
 
     # Tracking
     balance = initial_balance
@@ -32,64 +38,57 @@ def strategy(
         pt = row[price_col]
         vol = row[volume_col]
 
-        # Entry conditions
-        if pt < row["LowerBB"] and pt < row["SMA50"] * (1 - BB_BOUND):
-            positions += contract_size // 2
-            entry_price = pt
-        elif pt > row["UpperBB"] and pt > row["SMA50"] * (1 + BB_BOUND):
-            positions -= contract_size // 2
-            entry_price = pt
-        elif pt > row["Resistance"] and vol > VOLUME * row["AvgVolume20"]:
-            positions += contract_size // 2
-            entry_price = pt
-        elif pt < row["Support"] and vol > VOLUME * row["AvgVolume20"]:
-            positions -= contract_size // 2
-            entry_price = pt
+        # Entry condition
+        if positions == 0:
+            if pt < row["LowerBB"] and pt < row["SMA50"] * (1 - BB_BOUND):
+                positions = 1
+                entry_price = pt
+            elif pt > row["UpperBB"] and pt > row["SMA50"] * (1 + BB_BOUND):
+                positions = -1
+                entry_price = pt
+            elif pt > row["Resistance"] and vol > VOLUME * row["AvgVolume20"]:
+                positions = 1
+                entry_price = pt
+            elif pt < row["Support"] and vol > VOLUME * row["AvgVolume20"]:
+                positions = -1
+                entry_price = pt
 
-        # Exit and stop-loss
-        if positions > 0:  # Long
-            if pt >= row["SMA50"] or pt >= entry_price + TAKE_PROFIT_THRES_MEAN_REVERSION:
-                profit = (pt - entry_price) * (contract_size // 2)
-                balance += profit
-                total_trades += 1
-                winning_trades += 1 if profit > 0 else 0
-                losing_trades += 1 if profit <= 0 else 0
-                positions = 0
-            elif pt >= entry_price + TAKE_PROFIT_THRES_MOMENTUM:
-                profit = (pt - entry_price) * (contract_size // 2)
-                balance += profit
-                total_trades += 1
-                winning_trades += 1 if profit > 0 else 0
-                losing_trades += 1 if profit <= 0 else 0
-                positions = 0
-            elif pt < entry_price - CUT_LOSS_THRES_MEAN_REVERSION or pt < entry_price - CUT_LOSS_THRES_MOMENTUM:
-                loss = (CUT_LOSS_THRES_MEAN_REVERSION if pt < entry_price - CUT_LOSS_THRES_MEAN_REVERSION else CUT_LOSS_THRES_MOMENTUM) * (contract_size // 2)
-                balance -= loss
-                total_trades += 1
-                losing_trades += 1
-                positions = 0
+        # Exit logic
+        if positions != 0:
+            exit = False
+            is_long = positions > 0
 
-        elif positions < 0:  # Short
-            if pt <= row["SMA50"] or pt <= entry_price - TAKE_PROFIT_THRES_MEAN_REVERSION:
-                profit = (entry_price - pt) * (contract_size // 2)
-                balance += profit
+            if is_long:
+                if pt >= row["SMA50"] or pt >= entry_price + TAKE_PROFIT_THRES_MEAN_REVERSION:
+                    exit = True
+                elif pt >= entry_price + TAKE_PROFIT_THRES_MOMENTUM:
+                    exit = True
+                elif pt < entry_price - CUT_LOSS_THRES_MEAN_REVERSION or pt < entry_price - CUT_LOSS_THRES_MOMENTUM:
+                    exit = True
+            else:  # Short
+                if pt <= row["SMA50"] or pt <= entry_price - TAKE_PROFIT_THRES_MEAN_REVERSION:
+                    exit = True
+                elif pt <= entry_price - TAKE_PROFIT_THRES_MOMENTUM:
+                    exit = True
+                elif pt > entry_price + CUT_LOSS_THRES_MEAN_REVERSION or pt > entry_price + CUT_LOSS_THRES_MOMENTUM:
+                    exit = True
+
+            if exit:
+                price_diff = pt - entry_price if is_long else entry_price - pt
+                net_points = price_diff - point_fee  # include cost (0.47 for round trip)
+                profit_vnd = net_points * multiplier
+                profit_percent = profit_vnd / required_deposit
+
+                balance += profit_percent * required_deposit
+
                 total_trades += 1
-                winning_trades += 1 if profit > 0 else 0
-                losing_trades += 1 if profit <= 0 else 0
-                positions = 0
-            elif pt <= entry_price - TAKE_PROFIT_THRES_MOMENTUM:
-                profit = (entry_price - pt) * (contract_size // 2)
-                balance += profit
-                total_trades += 1
-                winning_trades += 1 if profit > 0 else 0
-                losing_trades += 1 if profit <= 0 else 0
-                positions = 0
-            elif pt > entry_price + CUT_LOSS_THRES_MEAN_REVERSION or pt > entry_price + CUT_LOSS_THRES_MOMENTUM:
-                loss = (CUT_LOSS_THRES_MEAN_REVERSION if pt > entry_price + CUT_LOSS_THRES_MEAN_REVERSION else CUT_LOSS_THRES_MOMENTUM) * (contract_size // 2)
-                balance -= loss
-                total_trades += 1
-                losing_trades += 1
-                positions = 0
+                if profit_vnd > 0:
+                    winning_trades += 1
+                else:
+                    losing_trades += 1
+
+                positions = 0  # close position
+                entry_price = 0
 
         profit_loss.append(balance)
 

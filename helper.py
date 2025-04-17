@@ -19,7 +19,7 @@ def plot_performance(PnL, dates):
     plt.figure(figsize=(12, 6))
     plt.plot(dates, PnL, label="Portfolio Value", color="blue")
     plt.xlabel("Date")
-    plt.ylabel("Balance ($)")
+    plt.ylabel("Balance (VND)")
     plt.title("Backtest Performance")
     plt.legend()
     plt.grid(True)
