@@ -18,7 +18,7 @@ def strategy(
     multiplier=100000,
     point_fee=0.47,
 ):
-    contract_margin = 1300 * multiplier * margin_ratio
+    contract_margin = multiplier * margin_ratio
     required_deposit = contract_margin / ar_ratio
 
     # Tracking
@@ -38,7 +38,7 @@ def strategy(
         vol = row[volume_col]
 
         # Entry condition
-        if positions == 0 and balance >= required_deposit:
+        if positions == 0 and balance >= pt * required_deposit:
             if pt < row["LowerBB"] and pt < row["SMA50"] * (1 - BB_BOUND):
                 positions = 1
                 entry_price = pt
@@ -57,20 +57,25 @@ def strategy(
             exit = False
             is_long = positions > 0
 
-            if is_long:
-                if pt >= row["SMA50"] or pt >= entry_price + TAKE_PROFIT_THRES_MEAN_REVERSION:
-                    exit = True
-                elif pt >= entry_price + TAKE_PROFIT_THRES_MOMENTUM:
-                    exit = True
-                elif pt < entry_price - CUT_LOSS_THRES_MEAN_REVERSION or pt < entry_price - CUT_LOSS_THRES_MOMENTUM:
-                    exit = True
-            else:  # Short
-                if pt <= row["SMA50"] or pt <= entry_price - TAKE_PROFIT_THRES_MEAN_REVERSION:
-                    exit = True
-                elif pt <= entry_price - TAKE_PROFIT_THRES_MOMENTUM:
-                    exit = True
-                elif pt > entry_price + CUT_LOSS_THRES_MEAN_REVERSION or pt > entry_price + CUT_LOSS_THRES_MOMENTUM:
-                    exit = True
+            loss_threshold = required_deposit * 0.1
+
+            if balance < loss_threshold:
+                exit = True
+            else:
+                if is_long:
+                    if pt >= row["SMA50"] or pt >= entry_price + TAKE_PROFIT_THRES_MEAN_REVERSION:
+                        exit = True
+                    elif pt >= entry_price + TAKE_PROFIT_THRES_MOMENTUM:
+                        exit = True
+                    elif pt < entry_price - CUT_LOSS_THRES_MEAN_REVERSION or pt < entry_price - CUT_LOSS_THRES_MOMENTUM:
+                        exit = True
+                else:  # Short
+                    if pt <= row["SMA50"] or pt <= entry_price - TAKE_PROFIT_THRES_MEAN_REVERSION:
+                        exit = True
+                    elif pt <= entry_price - TAKE_PROFIT_THRES_MOMENTUM:
+                        exit = True
+                    elif pt > entry_price + CUT_LOSS_THRES_MEAN_REVERSION or pt > entry_price + CUT_LOSS_THRES_MOMENTUM:
+                        exit = True
 
             if exit:
                 price_diff = pt - entry_price if is_long else entry_price - pt
