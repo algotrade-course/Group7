@@ -18,8 +18,7 @@ def strategy(
     multiplier=100000,
     point_fee=0.47,
 ):
-    # Realistic deposit required for 1 contract
-    contract_margin = multiplier * margin_ratio
+    contract_margin = 1300 * multiplier * margin_ratio
     required_deposit = contract_margin / ar_ratio
 
     # Tracking
@@ -39,7 +38,7 @@ def strategy(
         vol = row[volume_col]
 
         # Entry condition
-        if positions == 0:
+        if positions == 0 and balance >= required_deposit:
             if pt < row["LowerBB"] and pt < row["SMA50"] * (1 - BB_BOUND):
                 positions = 1
                 entry_price = pt
