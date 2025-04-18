@@ -4,6 +4,7 @@ import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
+
 def plot_dataset(df_train):
     plt.figure(figsize=(12, 6))
     plt.plot(df_train.index.to_pydatetime(),
@@ -12,11 +13,12 @@ def plot_dataset(df_train):
     # Labeling
     plt.xlabel('Time')
     plt.ylabel('Price')
-    plt.title(f'Price movement of {df_train["tickersymbol"].iloc[0]}')
+    plt.title(f'Price movement of VN30F1M')
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def plot_performance(PnL, dates):
     plt.figure(figsize=(12, 6))
@@ -32,10 +34,11 @@ def plot_performance(PnL, dates):
     plt.tight_layout()
     plt.show()
 
+
 def plot_comparison(results1, results2, dates):
     PnL_before = results1["PnL Over Time"]
     PnL_after = results2["PnL Over Time"]
-    labels=("Before Tuning", "After Tuning")
+    labels = ("Before Tuning", "After Tuning")
 
     min_len = min(len(PnL_before), len(PnL_after))
 
@@ -44,7 +47,7 @@ def plot_comparison(results1, results2, dates):
     dates = dates[:min_len]
 
     plt.figure(figsize=(12, 6))
-        
+
     plt.plot(dates, PnL_before, label=labels[0], color="red")
     plt.plot(dates, PnL_after, label=labels[1], color="blue")
 
@@ -58,6 +61,7 @@ def plot_comparison(results1, results2, dates):
     plt.gca().yaxis.set_major_formatter(formatter)
     plt.tight_layout()
     plt.show()
+
 
 def compute_indicators(df, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])
@@ -93,17 +97,18 @@ def compute_indicators(df, time_range, price_col="price", volume_col="quantity",
 
     return df_train
 
+
 def base_param_reset():
     base_result = {
-            "value": None,  # You can optionally include a baseline Sharpe ratio here
-            "params": {
-                "sma_window": 50,
-                "tp_mean_rev": 5,
-                "tp_momentum": 10,
-                "sl_mean_rev": 5,
-                "sl_momentum": 4
-            }
+        "value": None,  # You can optionally include a baseline Sharpe ratio here
+        "params": {
+            "sma_window": 50,
+            "tp_mean_rev": 5,
+            "tp_momentum": 10,
+            "sl_mean_rev": 5,
+            "sl_momentum": 4
         }
+    }
 
     with open("original_params.json", "w") as f:
         json.dump(base_result, f, indent=4)
