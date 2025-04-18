@@ -101,6 +101,7 @@ def strategy(
     total_return = (final_balance - initial_balance) / initial_balance
 
     sharpe = eval.sharpe_ratio(returns.tolist())
+    annual_sharpe = sharpe * np.sqrt(250 * 270) # annual sharpe = raw sharpe * sqrt(periods per year)
     mdd = eval.maximum_drawdown(returns.tolist())
 
     accum_return_rate = (final_balance / initial_balance) - 1
@@ -116,6 +117,7 @@ def strategy(
         "Losing Trades": losing_trades,
         "Accumulated Return": accum_return_rate,
         "Sharpe Ratio": sharpe,
+        "Annualized Sharpe Ratio": annual_sharpe,
         "Max Drawdown": mdd,
         "PnL Over Time": profit_loss,
     }
