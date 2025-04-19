@@ -1,9 +1,20 @@
+import time
+import threading
+import itertools
+import sys
 import pandas as pd
 import os
 import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
+def loading_spinner(message, stop_event):
+    spinner = itertools.cycle(['|', '/', '-', '\\'])
+    while not stop_event.is_set():
+        sys.stdout.write(f"\r{message} {next(spinner)}")
+        sys.stdout.flush()
+        time.sleep(0.1)
+    sys.stdout.write("\r" + " " * (len(message) + 2) + "\r")  # Clear line
 
 def plot_dataset(df_train):
     plt.figure(figsize=(12, 6))
