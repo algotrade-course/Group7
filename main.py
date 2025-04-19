@@ -1,9 +1,6 @@
 import subprocess
 import sys
 import pkg_resources
-import backtesting
-import finetuning
-import data_prep
 
 def check_and_install_requirements():
     required = {'matplotlib', 'numpy', 'optuna', 'pandas', 'psycopg-binary'}
@@ -41,8 +38,10 @@ def main_menu():
         choice = input("Choose an option (1, 2, 3, or 4): ").strip().lower()
 
         if choice == "1":
+            import finetuning
             finetuning.menu()
         elif choice == "2":
+            import backtesting
             backtesting.menu()
         elif choice == "3":
             print("Resetting all data...")

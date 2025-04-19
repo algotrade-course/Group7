@@ -1,7 +1,7 @@
 import pandas as pd
 import helper
 
-data = pd.read_csv("data.csv")
+data = pd.read_csv("df.csv")
 data['datetime'] = pd.to_datetime(data['datetime'])
 data.set_index('datetime', inplace=True)
 
@@ -15,11 +15,11 @@ data = data.reset_index()
 
 print("Making in sample data")
 data_train_in_sample = helper.compute_indicators(
-    data, "in sample data", [2021, 2022], save_path="in_sample_data.csv")
+    data, "in sample data", [2021, 2022], save_path="in_sample.csv")
 
 print("Making out sample data")
 data_train_out_sample = helper.compute_indicators(
-    data, "out sample data", [2023], save_path="out_sample_data.csv")
+    data, "out sample data", [2023], save_path="out_sample.csv")
 
 print("In sample data", data_train_in_sample.head(3))
 print("Out sample data", data_train_out_sample.head(3))
