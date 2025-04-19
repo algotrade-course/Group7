@@ -79,10 +79,10 @@ print("Preview data\n", data)
 
 while True:
     choice = input(
-        "\nDo you want to save the data to 'data.csv'? (y/n): ").strip().lower()
+        "\nDo you want to save the data to 'df.csv'? (y/n): ").strip().lower()
     if choice == 'y':
-        data.to_csv("data.csv", index=False)
-        print("Data saved to data.csv")
+        data.to_csv("df.csv", index=False)
+        print("Data saved to df.csv")
         break
     elif choice == 'n':
         print("Data not saved.")

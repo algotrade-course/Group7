@@ -1,6 +1,13 @@
+import os
 import pandas as pd
 import helper
 
+# Check if df.csv exists, if not, run query.py to create it
+if not os.path.exists("df.csv"):
+    import subprocess
+    print("df.csv not found. Running query.py to generate it...")
+    subprocess.run(["python", "query.py"], check=True)
+    
 data = pd.read_csv("df.csv")
 data['datetime'] = pd.to_datetime(data['datetime'])
 data.set_index('datetime', inplace=True)

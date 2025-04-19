@@ -43,22 +43,22 @@ def check_and_install_requirements():
 def main_menu():
     while True:
         print("\n=== MAIN MENU ===")
-        print("1. Run Finetuning")
-        print("2. Run Backtesting")
-        print("3. Reset all data")
+        print("1. Initiate all data")
+        print("2. Run Finetuning")
+        print("3. Run Backtesting")
         print("4. Quit")
 
         choice = input("Choose an option (1, 2, 3, or 4): ").strip().lower()
 
         if choice == "1":
+            print("Initiating all data...")
+            subprocess.run(["python", "data_prep.py"])
+        elif choice == "2":
             import finetuning
             finetuning.menu()
-        elif choice == "2":
-            import backtesting
-            backtesting.menu()
         elif choice == "3":
-            print("Resetting all data...")
-            subprocess.run(["python", "data_prep.py"])
+            import backtesting
+            backtesting.menu() 
         elif choice == "4":
             print("Goodbye!")
             break
