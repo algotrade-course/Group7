@@ -56,19 +56,23 @@ def menu():
         print("\n--- Select Sample Type ---")
         print("1. In-sample testing")
         print("2. Out-of-sample testing")
-        print("Q. Quit")
+        print("3. Back to main menu")
+        print("4. Quit")
 
-        sample_choice = input("Enter your choice (1, 2, or Q): ").strip().lower()
+        sample_choice = input("Enter your choice: ").strip().lower()
 
         if sample_choice == "1":
             sample = "in_sample.csv"
         elif sample_choice == "2":
             sample = "out_sample.csv"
-        elif sample_choice == "q":
-            print("Exiting program.")
+        elif sample_choice == "3":
+            print("Returning to main menu...")
             return
+        elif sample_choice == "4":
+            print("Exiting program.")
+            exit()
         else:
-            print("Invalid choice. Please enter 1, 2, or Q.")
+            print("Invalid choice. Please enter an interger from 1 to 4.")
             continue
 
         # Main menu for parameter selection
@@ -78,9 +82,9 @@ def menu():
             print("2. Execute on the optimized parameters")
             print("3. plot the different of original vs optimized backtesting")
             print("4. Go back")
-            print("Q. Quit")
+            print("5. Quit")
 
-            choice = input("Enter your choice (1, 2, 3, or Q): ").strip().lower()
+            choice = input("Enter your choice: ").strip().lower()
 
             if choice == "1":
                 file_path = "original_params.json"
@@ -110,11 +114,11 @@ def menu():
                 continue
             elif choice == "4":
                 break
-            elif choice == "q":
+            elif choice == "5":
                 print("Exiting program.")
-                return
+                exit()
             else:
-                print("Invalid choice. Please enter 1, 2, 3, or Q.")
+                print("Invalid choice. Please enter an interger from 1 to 5.")
                 continue
 
             try:
@@ -137,8 +141,8 @@ def menu():
                 back = input("Invalid input. Press B to go back to the menu, or Q to quit: ").strip().lower()
             if back == "q":
                 print("Exiting program.")
-                return
+                exit()
 
 # Run the menu
-if __name__ == "__main__":
-    menu()
+# if __name__ == "__main__":
+#     menu()
