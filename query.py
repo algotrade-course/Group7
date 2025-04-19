@@ -1,6 +1,5 @@
 import json
 import psycopg
-import pprint
 import pandas as pd
 
 # Read the JSON file as byte stream and load it into Python object using load()
@@ -58,7 +57,7 @@ with psycopg.connect(
     password=db_info['password']
 ) as conn:
     with conn.cursor() as cur:
-        print("Fetching data")
+        print("Fetching data:")
         for symbol, (start_date, end_date) in contracts.items():
             print(f"Fetching {symbol} data")
             cur.execute("""
@@ -73,10 +72,20 @@ with psycopg.connect(
             rows = cur.fetchall()
             all_data.extend(rows)  # Add result to list
 
-# Convert the list of tuples into a DataFrame
-df = pd.DataFrame(all_data, columns=[
-                  'datetime', 'tickersymbol', 'price', 'quantity'])
+data = pd.DataFrame(all_data, columns=[
+    'datetime', 'tickersymbol', 'price', 'quantity'])
 
-print("Saving data")
-df.to_csv("data.csv", index=False)
-print("Data saved to data.csv")
+print("Preview data\n", data)
+
+while True:
+    choice = input(
+        "\nDo you want to save the data to 'data.csv'? (y/n): ").strip().lower()
+    if choice == 'y':
+        data.to_csv("data.csv", index=False)
+        print("Data saved to data.csv")
+        break
+    elif choice == 'n':
+        print("Data not saved.")
+        break
+    else:
+        print("Invalid input. Please enter 'y' or 'n'.")

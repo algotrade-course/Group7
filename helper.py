@@ -8,6 +8,7 @@ import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
+
 def loading_spinner(message, stop_event):
     spinner = itertools.cycle(['|', '/', '-', '\\'])
     while not stop_event.is_set():
@@ -16,15 +17,8 @@ def loading_spinner(message, stop_event):
         time.sleep(0.1)
     sys.stdout.write("\r" + " " * (len(message) + 2) + "\r")  # Clear line
 
-def plot_dataset(df, df_name):
-    # Create directory if it doesn't exist
-    save_dir = 'graph'
-    os.makedirs(save_dir, exist_ok=True)
 
-    # Define the save path with df_name
-    save_path = os.path.join(save_dir, f'{df_name}.png')
-
-    # Plotting
+def plot_dataset(df):
     plt.figure(figsize=(12, 6))
     plt.plot(df.index.to_pydatetime(),
              df['price'], label='Price', color='blue')
@@ -36,12 +30,7 @@ def plot_dataset(df, df_name):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-
-    # Save the plot
-    plt.savefig(save_path)
-    plt.close()
-
-    print(f'{df_name} graph saved successfully to {save_path}')
+    plt.show()
 
 
 def plot_performance(PnL, dates):
