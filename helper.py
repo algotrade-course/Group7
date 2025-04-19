@@ -16,19 +16,32 @@ def loading_spinner(message, stop_event):
         time.sleep(0.1)
     sys.stdout.write("\r" + " " * (len(message) + 2) + "\r")  # Clear line
 
-def plot_dataset(df_train):
+def plot_dataset(df, df_name):
+    # Create directory if it doesn't exist
+    save_dir = 'graph'
+    os.makedirs(save_dir, exist_ok=True)
+
+    # Define the save path with df_name
+    save_path = os.path.join(save_dir, f'{df_name}.png')
+
+    # Plotting
     plt.figure(figsize=(12, 6))
-    plt.plot(df_train.index.to_pydatetime(),
-             df_train['price'], label='Price', color='blue')
+    plt.plot(df.index.to_pydatetime(),
+             df['price'], label='Price', color='blue')
 
     # Labeling
     plt.xlabel('Time')
     plt.ylabel('Price')
-    plt.title(f'Price movement of VN30F1M')
+    plt.title('Price movement of VN30F1M')
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+
+    # Save the plot
+    plt.savefig(save_path)
+    plt.close()
+
+    print(f'{df_name} graph saved successfully to {save_path}')
 
 
 def plot_performance(PnL, dates):
@@ -74,7 +87,7 @@ def plot_comparison(results1, results2, dates):
     plt.show()
 
 
-def compute_indicators(df, time_range, price_col="price", volume_col="quantity", save_path=None):
+def compute_indicators(df, df_name, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])
 
     df_train = df[df['datetime'].dt.year.isin(time_range)].copy()
@@ -101,10 +114,8 @@ def compute_indicators(df, time_range, price_col="price", volume_col="quantity",
 
         os.makedirs(dir_name, exist_ok=True)
 
-        if not os.path.exists(save_path):
-            df_train.to_csv(save_path)
-        else:
-            print(f"File '{save_path}' already exists.")
+        df_train.to_csv(save_path)
+        print(f"{df_name} saved to {save_path}")
 
     return df_train
 
