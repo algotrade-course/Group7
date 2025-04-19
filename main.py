@@ -2,6 +2,19 @@ import subprocess
 import sys
 import pkg_resources
 
+# Ensure pkg_resources is available
+try:
+    import pkg_resources
+except ImportError:
+    print("pkg_resources not found. Installing setuptools...")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
+        import pkg_resources
+        print("setuptools installed successfully.")
+    except Exception as e:
+        print(f"Failed to install setuptools: {e}")
+        sys.exit(1)
+
 def check_and_install_requirements():
     required = {'matplotlib', 'numpy', 'optuna', 'pandas', 'psycopg-binary'}
     installed = {pkg.key for pkg in pkg_resources.working_set}
