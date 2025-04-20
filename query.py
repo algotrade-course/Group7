@@ -6,7 +6,6 @@ import pandas as pd
 with open('database.json', 'rb') as fb:
     db_info = json.load(fb)
 
-
 contracts = {
     'VN30F2101': ('2020-12-18', '2021-01-21'),
     'VN30F2102': ('2021-01-15', '2021-02-18'),
@@ -79,10 +78,10 @@ print("Preview data\n", data)
 
 while True:
     choice = input(
-        "\nDo you want to save the data to 'df.csv'? (y/n): ").strip().lower()
+        "\nDo you want to save the data to 'data/data.csv'? (y/n): ").strip().lower()
     if choice == 'y':
-        data.to_csv("df.csv", index=False)
-        print("Data saved to df.csv")
+        data.to_csv("data/data.csv", index=False)
+        print("Data saved to data/data.csv")
         break
     elif choice == 'n':
         print("Data not saved.")

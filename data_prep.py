@@ -3,12 +3,12 @@ import pandas as pd
 import helper
 import json
 
-# Check if df.csv exists, if not, run query.py to create it
-if not os.path.exists("df.csv"):
+# Check if data.csv exists, if not, run query.py to create it
+if not os.path.exists("data/data.csv"):
     import subprocess
-    print("df.csv not found. Running query.py to generate it...")
+    print("data not found. Running query.py to generate it...")
     subprocess.run(["python", "query.py"], check=True)
-    
+
 data = pd.read_csv("df.csv")
 data['datetime'] = pd.to_datetime(data['datetime'])
 data.set_index('datetime', inplace=True)
@@ -23,11 +23,11 @@ data = data.reset_index()
 
 print("Making in sample data")
 data_train_in_sample = helper.compute_indicators(
-    data, "in sample data", [2021, 2022], save_path="in_sample.csv")
+    data, "in sample data", [2021, 2022], save_path="data/in_sample_data.csv")
 
 print("Making out sample data")
 data_train_out_sample = helper.compute_indicators(
-    data, "out sample data", [2023], save_path="out_sample.csv")
+    data, "out sample data", [2023], save_path="data/out_sample_data.csv")
 
 print("In sample data", data_train_in_sample.head(3))
 print("Out sample data", data_train_out_sample.head(3))

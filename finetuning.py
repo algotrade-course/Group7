@@ -4,8 +4,9 @@ import strategy
 import pandas as pd
 import json
 
+
 def optuna_objective(trial):
-    df = pd.read_csv("in_sample.csv")
+    df = pd.read_csv("data/in_sample_data.csv")
     df['datetime'] = pd.to_datetime(df['datetime'])
     df.set_index("datetime", inplace=True)
 
@@ -27,6 +28,7 @@ def optuna_objective(trial):
 
     return result["Sharpe Ratio"]
 
+
 def finetune(n):
     sampler = TPESampler(seed=710)
     study = optuna.create_study(sampler=sampler, direction='maximize')
@@ -38,7 +40,8 @@ def finetune(n):
     for key, value in study.best_trial.params.items():
         print(f"    {key}: {value}")
 
-    save_choice = input("\nDo you want to save this result? The old result will be deleted. (y/n): ").strip().lower()
+    save_choice = input(
+        "\nDo you want to save this result? The old result will be deleted. (y/n): ").strip().lower()
     if save_choice in ["yes", "y"]:
         result_to_save = {
             "value": study.best_trial.value,
@@ -50,9 +53,11 @@ def finetune(n):
     else:
         print("Result not saved.")
 
+
 def menu():
     while True:
-        user_input = input("\nNumber of trials (Note: ~6s per trial). Type B to go back to main menu: ").strip().lower()
+        user_input = input(
+            "\nEnter the number of trials (Note: ~6s per trial) or type B to go back to main menu: ").strip().lower()
 
         if user_input in ["b", "back"]:
             print("Returning to main menu...")

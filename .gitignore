@@ -1,4 +1,5 @@
 df.csv
 in_sample.csv
 out_sample.csv
+/data
 /__pycache__
