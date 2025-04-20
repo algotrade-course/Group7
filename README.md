@@ -22,6 +22,6 @@ The data using in this project is tick data of VN30F1M from 2020-12-18 to 2023-1
 
 ![Full data](graph/in_sample_data.png)
 
-**Figure 1: Out Sample Data Graph**
+**Figure 3: Out Sample Data Graph**
 
 ![Full data](graph/out_sample_data.png)
