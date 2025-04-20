@@ -2,4 +2,5 @@ df.csv
 in_sample.csv
 out_sample.csv
 /data
+/draft
 /__pycache__/
