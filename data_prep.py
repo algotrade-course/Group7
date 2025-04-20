@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import helper
+import json
 
 # Check if df.csv exists, if not, run query.py to create it
 if not os.path.exists("df.csv"):
@@ -30,6 +31,21 @@ data_train_out_sample = helper.compute_indicators(
 
 print("In sample data", data_train_in_sample.head(3))
 print("Out sample data", data_train_out_sample.head(3))
+
+base_result = {
+    "value": None,
+    "params": {
+        "sma_window": 50,
+        "tp_mean_rev": 5,
+        "tp_momentum": 10,
+        "sl_mean_rev": 5,
+        "sl_momentum": 4
+    }
+}
+
+with open("best_trial_result.json", "w") as f:
+    json.dump(base_result, f, indent=4)
+
 1
 while True:
     print("\nMenu:")

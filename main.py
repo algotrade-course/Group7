@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import pkg_resources
+import os
 
 # Ensure pkg_resources is available
 try:
@@ -43,7 +44,7 @@ def check_and_install_requirements():
 def main_menu():
     while True:
         print("\n=== MAIN MENU ===")
-        print("1. Initiate all data")
+        print("1. Initiate all data (recommended before finetuning and backtesting)")
         print("2. Run Finetuning")
         print("3. Run Backtesting")
         print("4. Quit")
@@ -54,9 +55,15 @@ def main_menu():
             print("Initiating all data...")
             subprocess.run(["python", "data_prep.py"])
         elif choice == "2":
+            if not (os.path.exists("in_sample.csv") and os.path.exists("out_sample.csv") and os.path.exists("df.csv")):
+                print("\n[!] Not enough data to execute this function.\nPlease initiate all data and come back later.")
+                continue
             import finetuning
             finetuning.menu()
         elif choice == "3":
+            if not (os.path.exists("in_sample.csv") and os.path.exists("out_sample.csv") and os.path.exists("df.csv")):
+                print("\n[!] Not enough data to execute this function.\nPlease initiate all data and come back later.")
+                continue
             import backtesting
             backtesting.menu() 
         elif choice == "4":

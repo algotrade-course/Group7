@@ -111,7 +111,7 @@ def compute_indicators(df, df_name, time_range, price_col="price", volume_col="q
 
 def base_param_reset():
     base_result = {
-        "value": None,  # You can optionally include a baseline Sharpe ratio here
+        "value": None,
         "params": {
             "sma_window": 50,
             "tp_mean_rev": 5,
