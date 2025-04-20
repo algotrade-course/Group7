@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import pkg_resources
 import os
 
 # Ensure pkg_resources is available
