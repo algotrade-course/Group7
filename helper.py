@@ -1,5 +1,4 @@
 import time
-import threading
 import itertools
 import sys
 import pandas as pd

@@ -1,8 +1,6 @@
 import pandas as pd
 import helper
-from helper import threading
-import optuna
-from optuna.samplers import TPESampler
+import threading
 import strategy
 import json
 
@@ -59,12 +57,12 @@ def menu():
         print("3. Back to main menu")
         print("4. Quit")
 
-        sample_choice = input("Enter your choice: ").strip().lower()
+        sample_choice = input("Enter your choice (1-4): ").strip().lower()
 
         if sample_choice == "1":
-            sample = "in_sample.csv"
+            sample = "data/in_sample_data.csv"
         elif sample_choice == "2":
-            sample = "out_sample.csv"
+            sample = "data/out_sample_data.csv"
         elif sample_choice == "3":
             print("Returning to main menu...")
             return
@@ -84,7 +82,7 @@ def menu():
             print("4. Go back")
             print("5. Quit")
 
-            choice = input("Enter your choice: ").strip().lower()
+            choice = input("Enter your choice (1-5): ").strip().lower()
 
             if choice == "1":
                 file_path = "original_params.json"

@@ -9,7 +9,7 @@ if not os.path.exists("data/data.csv"):
     print("data not found. Running query.py to generate it...")
     subprocess.run(["python", "query.py"], check=True)
 
-data = pd.read_csv("df.csv")
+data = pd.read_csv("data/data.csv")
 data['datetime'] = pd.to_datetime(data['datetime'])
 data.set_index('datetime', inplace=True)
 

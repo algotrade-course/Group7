@@ -1,3 +1,4 @@
+import os
 import json
 import psycopg
 import pandas as pd
@@ -80,6 +81,9 @@ while True:
     choice = input(
         "\nDo you want to save the data to 'data/data.csv'? (y/n): ").strip().lower()
     if choice == 'y':
+        if not os.path.exists("data"):
+            os.makedirs("data")
+            print("Created 'data' folder.")
         data.to_csv("data/data.csv", index=False)
         print("Data saved to data/data.csv")
         break
