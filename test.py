@@ -1,11 +1,15 @@
 import backtesting
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import helper
 
 # Run the backtest
-result, PnL, date_list = backtesting.backtesting("data/in_sample_data.csv", "best_trial_result.json", 30000000)
+result, PnL, date_list = backtesting.backtesting("data/in_sample_data.csv", "best_trial_result.json", 100000000)
 
-# Get drawdown over time from results
+helper.plot_standardized_minute_returns_distribution(result["NAV Over Time"])
+# with open("output.txt", "w") as f:
+#     print(result["NAV Over Time"], file=f)
+'''# Get drawdown over time from results
 drawdown = result["Drawdown Over Time"]
 date_list = date_list[:len(drawdown)]
 
@@ -18,7 +22,7 @@ plt.ylabel("Drawdown (%)")
 plt.grid(True)
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.show()
+plt.show()'''
 
 # Old plot option in backtesting.py code
 '''

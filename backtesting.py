@@ -133,18 +133,21 @@ def menu():
             while True:
                 print("1. View the Net Asset Value (NAV) over time graph")
                 print("2. View the Drawdown over time graph")
-                print("3. Go back")
-                print("4. Quit")
+                print("3. View standardized minutely returns distribution")
+                print("4. Go back")
+                print("5. Quit")
 
-                plot_choice = input("Enter your choice (1-4): ").strip().lower()
+                plot_choice = input("Enter your choice (1-5): ").strip().lower()
 
                 if plot_choice == "1":
                     helper.plot_performance(NAV, date_list)
                 elif plot_choice == "2":
                     helper.plot_drawdown_overtime(result, date_list)
                 elif plot_choice == "3":
-                    break
+                    helper.plot_standardized_minute_returns_distribution(result["NAV Over Time"])
                 elif plot_choice == "4":
+                    break
+                elif plot_choice == "5":
                     print("Exiting program.")
                     exit()
 

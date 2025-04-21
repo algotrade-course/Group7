@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 import os
 import json
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
@@ -90,6 +91,48 @@ def plot_drawdown_overtime(results, date):
     plt.tight_layout()
     plt.show()
 
+def plot_standardized_minute_returns_distribution(nav_over_time):
+    """
+    Plot the distribution of standardized (Z-scored) minute returns using Matplotlib.
+
+    Parameters:
+    - nav_over_time (list or np.array): NAV values over time (from 'NAV Over Time').
+    """
+    nav_over_time = np.array(nav_over_time)
+
+    # Handle constant values or overly stable periods by removing duplicates
+    nav_over_time = nav_over_time[np.diff(np.insert(nav_over_time, 0, nav_over_time[0])) != 0]
+
+    # Calculate minute returns
+    minute_returns = np.diff(nav_over_time) / nav_over_time[:-1]
+    
+    # Standardize the minute returns
+    mean_return = np.mean(minute_returns)
+    std_return = np.std(minute_returns)
+    if std_return == 0:
+        print("Standard deviation is zero, unable to standardize!")
+        return
+    
+    z_returns = (minute_returns - mean_return) / std_return
+
+    # Filter out extreme Z-scores (e.g., beyond ±5)
+    z_returns_filtered = z_returns[np.abs(z_returns) < 5]
+
+    # Plot the improved histogram
+    plt.figure(figsize=(12, 7))
+    plt.hist(z_returns_filtered, bins=150, color='skyblue', edgecolor='black', alpha=0.75)
+
+    plt.axvline(0, color='black', linestyle='-', linewidth=1.5, label='Mean (Z=0)')
+    plt.axvline(1, color='gray', linestyle='--', label='+1 STD (Z=1)')
+    plt.axvline(-1, color='gray', linestyle='--', label='-1 STD (Z=-1)')
+
+    plt.title("Distribution of Standardized Minute Returns (Z-Score)")
+    plt.xlabel("Standardized Minute Return (Z-Score)")
+    plt.ylabel("Frequency")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 def compute_indicators(df, df_name, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])
