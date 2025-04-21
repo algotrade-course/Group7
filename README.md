@@ -207,10 +207,14 @@ After using in-sample data on finetuning with 100 trial and the initial balance 
 }
 ```
 
-**Figure 6: The PnL value over time different on in sample data**
+**Figure 6: The Optuna trials**
+
+![in_sample_diff](graph/optuna-trials.png)
+
+**Figure 7: The PnL value over time different on in sample data**
 
 ![in_sample_diff](graph/in_sample_diff.png)
 
-**Figure 7: The PnL value over time different on out sample data**
+**Figure 8: The PnL value over time different on out sample data**
 
 ![in_sample_diff](graph/out_sample_diff.png)
