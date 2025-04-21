@@ -35,3 +35,28 @@ def maximum_drawdown(period_returns: List[float]) -> float:
     return -max_drawdown
     
     raise NotImplementedError()
+
+def maximum_drawdown_over_time(period_returns: List[float]) -> List[float]:
+    # Your function should raise ValueError according to the docstrings
+    # Initial and peak asset
+    peak = 1
+    cur_asset = 1
+    dd = []
+    
+    if not period_returns:
+        raise ValueError("period_returns cannot be None or empty.")
+    
+    if 1 in period_returns:
+        raise ValueError("period_returns should not contain 1.")
+    
+    max_drawdown = 0
+
+    for r in period_returns:
+        cur_asset *= (1 + r)  
+        peak = max(peak, cur_asset)
+        drawdown = (peak - cur_asset) / peak
+        dd.append(-drawdown)
+
+    return dd
+    
+    raise NotImplementedError()

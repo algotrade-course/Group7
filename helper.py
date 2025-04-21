@@ -74,6 +74,22 @@ def plot_comparison(results1, results2, dates):
     plt.tight_layout()
     plt.show()
 
+def plot_drawdown_overtime(results, date):
+    # Get drawdown over time from results
+    drawdown = results["Drawdown Over Time"]
+    date = date[:len(drawdown)]
+
+    # Plot the drawdown
+    plt.figure(figsize=(12, 6))
+    plt.plot(date, drawdown, color='red')
+    plt.title("Drawdown Over Time")
+    plt.xlabel("Date")
+    plt.ylabel("Drawdown (%)")
+    plt.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
 
 def compute_indicators(df, df_name, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])

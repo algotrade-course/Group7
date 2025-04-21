@@ -40,10 +40,11 @@ def backtesting(sample, file_path, initial_balance, verbose=True):
     # Print results
     if verbose:
         for key, value in results1.items():
-            if key != "PnL Over Time":
+            if key != "PnL Over Time" and key != "Drawdown Over Time":
                 print(f"{key}: {value}")
 
     PnL = results1["PnL Over Time"]
+    DD_overtime = results1["Drawdown Over Time"]
     date_list = df.index[int(params["sma_window"]) - 1:]
 
     return results1, PnL, date_list
@@ -126,20 +127,27 @@ def menu():
                 continue
 
             # Run the strategy
-            _, PnL, date_list = backtesting(sample, file_path=file_path, initial_balance=initial_balance)
+            result, PnL, date_list = backtesting(sample, file_path=file_path, initial_balance=initial_balance)
 
             # Ask to see the chart
-            see_chart = input("\nDo you want to see the PnL over time graph? (y/n): ").strip().lower()
-            if see_chart == "y":
-                helper.plot_performance(PnL, date_list)
+            while True:
+                print("1. View the PnL over time graph")
+                print("2. View the Drawdown over time graph")
+                print("3. Go back")
+                print("4. Quit")
 
-            # Wait for user to go back or quit
-            back = input("\nPress B to go back, or Q to quit: ").strip().lower()
-            while back not in ["b", "q"]:
-                back = input("Invalid input. Press B to go back to the menu, or Q to quit: ").strip().lower()
-            if back == "q":
-                print("Exiting program.")
-                exit()
+                plot_choice = input("Enter your choice (1-4): ").strip().lower()
+
+                if plot_choice == "1":
+                    helper.plot_performance(PnL, date_list)
+                elif plot_choice == "2":
+                    helper.plot_drawdown_overtime(result, date_list)
+                elif plot_choice == "3":
+                    break
+                elif plot_choice == "4":
+                    print("Exiting program.")
+                    exit()
+
 
 # Run the menu
 # if __name__ == "__main__":
