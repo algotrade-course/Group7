@@ -2,11 +2,22 @@ import backtesting
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import helper
+import pandas as pd
 
 # Run the backtest
-result, PnL, date_list = backtesting.backtesting("data/in_sample_data.csv", "best_trial_result.json", 100000000)
+df_temp = pd.read_csv("data/in_sample_data.csv")
+df_temp['datetime'] = pd.to_datetime(df_temp['datetime'])
+df_temp.set_index("datetime", inplace=True)
+df_temp["price"] *= 100_000
+initial_balance = df_temp["price"].iloc[0]
+result, NAV, date_list = backtesting.backtesting("data/in_sample_data.csv", "best_trial_result.json", initial_balance)
 
-helper.plot_standardized_minute_returns_distribution(result["NAV Over Time"])
+helper.plot_price_vs_nav(df_temp, NAV, date_list)
+
+
+
+
+# helper.plot_standardized_minute_returns_distribution(result["NAV Over Time"])
 # with open("output.txt", "w") as f:
 #     print(result["NAV Over Time"], file=f)
 '''# Get drawdown over time from results

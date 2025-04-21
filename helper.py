@@ -134,6 +134,30 @@ def plot_standardized_minute_returns_distribution(nav_over_time):
     plt.tight_layout()
     plt.show()
 
+def plot_price_vs_nav(df, nav, date_list):
+    """
+    Plot the comparison between asset price and NAV over time.
+
+    Args:
+        df (pd.DataFrame): The DataFrame with price data.
+        nav (list): The NAV over time from the strategy.
+        date_list (pd.DatetimeIndex): Corresponding dates for NAV.
+    """
+    # Align the price series with the same date range as NAV
+    aligned_prices = df.loc[date_list, "price"]
+
+    plt.figure(figsize=(14, 6))
+    plt.plot(date_list, aligned_prices, label="Price", color='blue', alpha=0.6)
+    plt.plot(date_list, nav, label="NAV", color='green', linewidth=2)
+
+    plt.xlabel("Datetime")
+    plt.ylabel("Value (VND)")
+    plt.title("Price vs NAV Over Time")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
 def compute_indicators(df, df_name, time_range, price_col="price", volume_col="quantity", save_path=None):
     df['datetime'] = pd.to_datetime(df['datetime'])
 
