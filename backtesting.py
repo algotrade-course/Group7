@@ -40,14 +40,14 @@ def backtesting(sample, file_path, initial_balance, verbose=True):
     # Print results
     if verbose:
         for key, value in results1.items():
-            if key != "PnL Over Time" and key != "Drawdown Over Time":
+            if key != "NAV Over Time" and key != "Drawdown Over Time":
                 print(f"{key}: {value}")
 
-    PnL = results1["PnL Over Time"]
+    NAV = results1["NAV Over Time"]
     DD_overtime = results1["Drawdown Over Time"]
     date_list = df.index[int(params["sma_window"]) - 1:]
 
-    return results1, PnL, date_list
+    return results1, NAV, date_list
 
 def menu():
     while True:
@@ -127,11 +127,11 @@ def menu():
                 continue
 
             # Run the strategy
-            result, PnL, date_list = backtesting(sample, file_path=file_path, initial_balance=initial_balance)
+            result, NAV, date_list = backtesting(sample, file_path=file_path, initial_balance=initial_balance)
 
             # Ask to see the chart
             while True:
-                print("1. View the PnL over time graph")
+                print("1. View the Net Asset Value (NAV) over time graph")
                 print("2. View the Drawdown over time graph")
                 print("3. Go back")
                 print("4. Quit")
@@ -139,7 +139,7 @@ def menu():
                 plot_choice = input("Enter your choice (1-4): ").strip().lower()
 
                 if plot_choice == "1":
-                    helper.plot_performance(PnL, date_list)
+                    helper.plot_performance(NAV, date_list)
                 elif plot_choice == "2":
                     helper.plot_drawdown_overtime(result, date_list)
                 elif plot_choice == "3":

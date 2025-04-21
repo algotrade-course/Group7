@@ -32,9 +32,9 @@ def plot_dataset(df):
     plt.show()
 
 
-def plot_performance(PnL, dates):
+def plot_performance(NAV, dates):
     plt.figure(figsize=(12, 6))
-    plt.plot(dates, PnL, label="Portfolio Value", color="blue")
+    plt.plot(dates, NAV, label="Portfolio Value", color="blue")
     plt.xlabel("Date")
     plt.ylabel("Balance (VND)")
     plt.title("Backtest Performance")
@@ -48,20 +48,20 @@ def plot_performance(PnL, dates):
 
 
 def plot_comparison(results1, results2, dates):
-    PnL_before = results1["PnL Over Time"]
-    PnL_after = results2["PnL Over Time"]
+    NAV_before = results1["NAV Over Time"]
+    NAV_after = results2["NAV Over Time"]
     labels = ("Before Tuning", "After Tuning")
 
-    min_len = min(len(PnL_before), len(PnL_after))
+    min_len = min(len(NAV_before), len(NAV_after))
 
-    PnL_before = PnL_before[:min_len]
-    PnL_after = PnL_after[:min_len]
+    NAV_before = NAV_before[:min_len]
+    NAV_after = NAV_after[:min_len]
     dates = dates[:min_len]
 
     plt.figure(figsize=(12, 6))
 
-    plt.plot(dates, PnL_before, label=labels[0], color="red")
-    plt.plot(dates, PnL_after, label=labels[1], color="blue")
+    plt.plot(dates, NAV_before, label=labels[0], color="red")
+    plt.plot(dates, NAV_after, label=labels[1], color="blue")
 
     plt.xlabel("Date")
     plt.ylabel("Balance (VND)")

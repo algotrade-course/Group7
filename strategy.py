@@ -120,6 +120,6 @@ def strategy(
         "Sharpe Ratio": sharpe,
         "Annualized Sharpe Ratio": annual_sharpe,
         "Max Drawdown": mdd,
-        "PnL Over Time": profit_loss,
+        "NAV Over Time": profit_loss,
         "Drawdown Over Time": dd_list,
     }
