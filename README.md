@@ -21,7 +21,7 @@ The working hypothesis for this project is that VN30F1M price action exhibits bo
 
 ## Data Collection and Processing
 
-Historical market information for the VN30 Index Futures was directly retrieved from a PostgreSQL database containing minute-level trading data. The information contained price, volume, and symbol data for a few contract months. The data was resampled to 1-minute frequency and cleaned to remove missing values after being gathered. Technical indicators such as SMA20, SMA50, Bollinger Bands, resistance/support levels, and average volume were computed and saved in separate in-sample and out-of-sample CSV files utilizing the `helper.compute_indicators()` function.
+Historical market information for the VN30 Index Futures was directly retrieved from a Google Drive link containing tick-level trading data. The information contained price, volume, and symbol data for a few contract months. The data was resampled to 1-minute frequency and cleaned to remove missing values after being gathered. Technical indicators such as SMA20, SMA50, Bollinger Bands, resistance/support levels, and average volume were computed and saved in separate in-sample and out-of-sample CSV files utilizing the `helper.compute_indicators()` function.
 
 ## Trading Algorithm Implementation
 
@@ -111,8 +111,8 @@ Choose an option (1-4):
 
 ## Data collection
 
-- The tick price and quantity of VN30F1M are collected from Algotrade database using SQL queries.
-- The file query.py contains the function to get the data and save the data to a csv file at the path <DATA_PATH>/data/data.csv
+- The tick price and quantity of VN30F1M are collected from a private database using SQL queries, then was uploaded to a public Google Drive link.
+- The file query.py contains the function to download the data from the Google Drive link and save it to a csv file at the path <DATA_PATH>/data/data.csv
 
 **Figure 1: Full Data Graph**
 
