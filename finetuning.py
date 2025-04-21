@@ -80,11 +80,11 @@ def menu():
         print("\n=== Optuna Fine-Tuning Menu ===")
         print("1. Run fine-tuning")
         print("2. Show dot plot of trials")
-        print("4. Back to main menu")
+        print("3. Back to main menu")
 
         user_input = input("Enter your choice: ").strip().lower()
 
-        if user_input == "4":
+        if user_input == "3":
             print("Returning to main menu...")
             return
 
