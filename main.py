@@ -18,7 +18,7 @@ except ImportError:
 
 
 def check_and_install_requirements():
-    required = {'matplotlib', 'numpy', 'optuna', 'pandas', 'psycopg-binary'}
+    required = {'matplotlib', 'numpy', 'optuna', 'pandas', 'psycopg-binary', 'gdown'}
     installed = {pkg.key for pkg in pkg_resources.working_set}
 
     # Find missing packages
