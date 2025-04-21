@@ -39,32 +39,6 @@ To improve performance, we used **Optuna**, which is a hyperparameter optimizati
 
 After optimization, the trading strategy was backtested on out-of-sample 2023 data to test its ability to generalize. This out-of-sample test mimicked real-world deployment and ensured that the optimized parameters had the ability to perform outside of the training window. It was discovered that the model continued to produce a competitive Sharpe ratio and profitable trade results, confirming the robustness of the dual-strategy approach and the effectiveness of parameter tuning.
 
-# Data
-
-The data using in this project is tick data of VN30F1M from 2020-12-18 to 2023-12-21. After being collected from the Algotrade database, the data is aggregated to time interval of 1 minute.
-
-## Data collection
-
-- The tick price and quantity of VN30F1M are collected from Algotrade database using SQL queries.
-- The file query.py contains the function to get the data and save the data to a csv file at the path <DATA_PATH>/data/data.csv
-
-**Figure 1: Full Data Graph**
-
-![Full data](graph/data.png)
-
-## Data processing
-
-- The data will be aggregated into minute data. Then it will be splited into in_sample_data and out_sample_data. The in_sample_data will contain data from 2021 to 2022, and out_sample data will contain data in 2023.
-- The in_sample_data and out_sample_data are stored in <DATA_PATH>/data/in_sample_data.csv and <DATA_PATH>/data/out_sample_data.csv
-
-**Figure 2: In Sample Data Graph**
-
-![Full data](graph/in_sample_data.png)
-
-**Figure 3: Out Sample Data Graph**
-
-![Full data](graph/out_sample_data.png)
-
 # Implementation
 
 **Requirements:** This implementation requires `pip` to work properly
@@ -79,18 +53,21 @@ cd Group7
 ## Set up Python virtual environment
 
 **1. Create the virtual environment**
+
 ```bash
-python -m venv myenv 
+python -m venv myenv
 ```
 
 **2. Activate the virtual environment**
 
 - For Windows:
+
 ```bash
 myenv\Scripts\activate
 ```
 
 - For Linux/MacOS:
+
 ```bash
 source myenv/bin/activate
 ```
@@ -98,24 +75,29 @@ source myenv/bin/activate
 ## Start application
 
 **1. Start the program**
+
 ```bash
 python main.py
 ```
 
 **2. Libraries**
 If you do not have the requisite libraries needed for this application, it will ask you to install those libraries. Here is an example:
+
 ```
 Missing the following required libraries: numpy, matplotlib, optuna, psycopg-binary, pandas
 
 Would you like to install them? (y/n):
 ```
+
 Enter `y` will automatically install all the required libraries and proceed to the main menu.
 
 **3. The main menu**
+
 - Enter `1` will initiate all the data needed for future simulation and optimization. This will include initiating the dataset, in sample data, out of sample data, and delete the currently saved optimized simulation values.
 - Enter `2` will take the user to the Fine tune section.
 - Enter `3` will take the user to the Backtesting section.
 - Enter `4` to quit the program.
+
 ```
 === MAIN MENU ===
 1. Initiate all data (recommended before finetuning and backtesting)
@@ -126,3 +108,109 @@ Choose an option (1-4):
 ```
 
 # Results
+
+## Data collection
+
+- The tick price and quantity of VN30F1M are collected from Algotrade database using SQL queries.
+- The file query.py contains the function to get the data and save the data to a csv file at the path <DATA_PATH>/data/data.csv
+
+**Figure 1: Full Data Graph**
+
+![full_data](graph/data.png)
+
+## Data processing
+
+- The data will be aggregated into minute data. Then it will be splited into in_sample_data and out_sample_data. The in_sample_data will contain data from 2021 to 2022, and out_sample data will contain data in 2023.
+- The in_sample_data and out_sample_data are stored in <DATA_PATH>/data/in_sample_data.csv and <DATA_PATH>/data/out_sample_data.csv
+
+**Figure 2: In Sample Data Graph**
+
+![in_sample_data](graph/in_sample_data.png)
+
+**Figure 3: Out Sample Data Graph**
+
+![out_sample_data](graph/out_sample_data.png)
+
+## Testing
+
+The default parameters are as follows:
+
+```
+{
+    "value": null,
+    "params": {
+        "sma_window": 50,
+        "tp_mean_rev": 5,
+        "tp_momentum": 10,
+        "sl_mean_rev": 5,
+        "sl_momentum": 4
+    }
+}
+```
+
+### In sample backtesting
+
+The testing result with default parameters and the initial balance of 40,000,000VND:
+
+```
+Initial Balance: 40000000.0
+Final Balance: 341921999.99999994
+Win Rate: 83.33333333333334
+Total Trades: 144
+Winning Trades: 120
+Losing Trades: 24
+Accumulated Return: 7.548049999999998
+Sharpe Ratio: 0.013550733578558087
+Annualized Sharpe Ratio: 3.5205838556838356
+Max Drawdown: -0.1457418178661343
+```
+
+**Figure 4: The PnL value over time**
+
+![in_sample_default_PnL](graph/in_sample_original_PnL.png)
+
+### Out sample backtesting
+
+The testing result with default parameters and the initial balance of 40,000,000VND:
+
+```
+Initial Balance: 40000000.0
+Final Balance: 105258000.00000004
+Win Rate: 93.47826086956522
+Total Trades: 46
+Winning Trades: 43
+Losing Trades: 3
+Accumulated Return: 1.631450000000001
+Sharpe Ratio: 0.019119642119491697
+Annualized Sharpe Ratio: 4.9674287360240275
+Max Drawdown: -0.015752822662429847
+```
+
+**Figure 5: The PnL value over time**
+
+![out_sample_default_PnL](graph/out_sample_original_PnL.png)
+
+## Finetuning
+
+After using in-sample data on finetuning with 100 trial and the initial balance of 40,000,000VND, the optimized parameters are:
+
+```
+{
+    "value": 0.014838635780793847,
+    "params": {
+        "sma_window": 64,
+        "tp_mean_rev": 10.0,
+        "tp_momentum": 12.0,
+        "sl_mean_rev": 6.5,
+        "sl_momentum": 7.5
+    }
+}
+```
+
+**Figure 6: The PnL value over time different on in sample data**
+
+![in_sample_diff](graph/in_sample_diff.png)
+
+**Figure 7: The PnL value over time different on out sample data**
+
+![in_sample_diff](graph/out_sample_diff.png)

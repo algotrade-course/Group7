@@ -29,8 +29,8 @@ print("Making out sample data")
 data_train_out_sample = helper.compute_indicators(
     data, "out sample data", [2023], save_path="data/out_sample_data.csv")
 
-print("In sample data", data_train_in_sample.head(3))
-print("Out sample data", data_train_out_sample.head(3))
+print("In sample data\n", data_train_in_sample.head(3))
+print("Out sample data\n", data_train_out_sample.head(3))
 
 base_result = {
     "value": None,
