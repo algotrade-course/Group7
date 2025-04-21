@@ -23,7 +23,13 @@ The working hypothesis for this project is that VN30F1M price action exhibits bo
 
 - Dependable variables:
   
-  - ![equation](https://latex.codecogs.com/png.image?\dpi{110}SMA(n)=(P_t&plus;P_{t-1}&plus;...&plus;P_{t-n&plus;1})\div&space;5)
+  - $SMA(n) = (P_t + P_{t+1} + ... + P_{t+n-1}) \div 5$
+  
+  - Bollinger Bands (20, 2):
+    
+    - $Upper Band = SMA(20) + 2 × Standard Deviation(20)$
+    
+    - $Lower Band = SMA(20) - 2 × Standard Deviation(20)$
 
 ## Data Collection and Processing
 
