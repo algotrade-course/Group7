@@ -38,3 +38,20 @@ plt.show()
                 print("Exiting program.")
                 exit()
 '''
+
+# Old optuna trial menu
+'''
+    while True:
+        user_input = input(
+            "\nEnter the number of trials (Note: ~6s per trial) or type B to go back to main menu: ").strip().lower()
+
+        if user_input in ["b", "back"]:
+            print("Returning to main menu...")
+            return  # Just return instead of exiting the program
+
+        try:
+            trials_num = int(user_input)
+            finetune(trials_num)
+        except ValueError:
+            print("Invalid input. Please enter an integer or 'b' to go back.")
+'''

@@ -3,7 +3,8 @@ from optuna.samplers import TPESampler
 import strategy
 import pandas as pd
 import json
-
+import optuna.visualization.matplotlib as vis
+import matplotlib.pyplot as plt
 
 def optuna_objective(trial):
     df = pd.read_csv("data/in_sample_data.csv")
@@ -28,11 +29,16 @@ def optuna_objective(trial):
 
     return result["Sharpe Ratio"]
 
+# Store the global study object for reuse
+global_study = None
 
 def finetune(n):
+    global global_study
     sampler = TPESampler(seed=710)
     study = optuna.create_study(sampler=sampler, direction='maximize')
     study.optimize(optuna_objective, n_trials=n, show_progress_bar=True)
+
+    global_study = study
 
     print("\nBest trial:")
     print("  Value:", study.best_trial.value)
@@ -53,21 +59,46 @@ def finetune(n):
     else:
         print("Result not saved.")
 
+def show_dot_plot():
+    global global_study
+    if global_study is None:
+        print("⚠️  No Optuna study available. Run fine-tuning first.")
+        return
+
+    ax = vis.plot_optimization_history(global_study)
+    fig = ax.figure
+    fig.set_size_inches(12, 6)
+
+    ax.set_ylabel("Sharpe Ratio")
+    ax.set_title("Optuna Optimization History")
+    fig.tight_layout()
+
+    plt.show()
 
 def menu():
     while True:
-        user_input = input(
-            "\nEnter the number of trials (Note: ~6s per trial) or type B to go back to main menu: ").strip().lower()
+        print("\n=== Optuna Fine-Tuning Menu ===")
+        print("1. Run fine-tuning")
+        print("2. Show dot plot of trials")
+        print("4. Back to main menu")
 
-        if user_input in ["b", "back"]:
+        user_input = input("Enter your choice: ").strip().lower()
+
+        if user_input == "4":
             print("Returning to main menu...")
-            return  # Just return instead of exiting the program
+            return
 
-        try:
-            trials_num = int(user_input)
-            finetune(trials_num)
-        except ValueError:
-            print("Invalid input. Please enter an integer or 'b' to go back.")
+        elif user_input == "1":
+            try:
+                trials_num = int(input("Enter the number of trials (Note: ~6s per trial): ").strip())
+                finetune(trials_num)
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
+        elif user_input == "2":
+            show_dot_plot()
+            continue
+        else:
+            print("Invalid choice. Please try again.")
 
 # Run the menu
 # if __name__ == "__main__":
