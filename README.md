@@ -169,6 +169,10 @@ Max Drawdown: -0.1457418178661343
 
 ![in_sample_default_PnL](graph/in_sample_original_PnL.png)
 
+**Figure 5: The Drawdown value over time**
+
+![in_sample_default_Drawdown](graph/in_sample_original_drawdown.png)
+
 ### Out sample backtesting
 
 The testing result with default parameters and the initial balance of 40,000,000VND:
@@ -186,9 +190,13 @@ Annualized Sharpe Ratio: 4.9674287360240275
 Max Drawdown: -0.015752822662429847
 ```
 
-**Figure 5: The PnL value over time**
+**Figure 6: The PnL value over time**
 
 ![out_sample_default_PnL](graph/out_sample_original_PnL.png)
+
+**Figure 7: The Drawdown value over time**
+
+![in_sample_default_Drawdown](graph/out_sample_original_drawdown.png)
 
 ## Finetuning
 
@@ -207,14 +215,14 @@ After using in-sample data on finetuning with 100 trial and the initial balance 
 }
 ```
 
-**Figure 6: The Optuna trials**
+**Figure 8: The Optuna trials**
 
 ![in_sample_diff](graph/optuna-trials.png)
 
-**Figure 7: The PnL value over time different on in sample data**
+**Figure 9: The PnL value over time different on in sample data**
 
 ![in_sample_diff](graph/in_sample_diff.png)
 
-**Figure 8: The PnL value over time different on out sample data**
+**Figure 10: The PnL value over time different on out sample data**
 
 ![in_sample_diff](graph/out_sample_diff.png)
