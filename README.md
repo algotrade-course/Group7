@@ -3,21 +3,27 @@
 - Dương Phúc Nguyên - 21125124
 - Nguyễn Huỳnh Việt Thống - 21125140
 
-# Abstract
+# 0. Abstract
 
 This project presents a trading strategy for **VN30 Index Futures (VN30F1M)** based on the phenomenon that price divergences from the 50-period simple moving average (SMA50) will revert to the mean, while strong breakouts with high volume will indicate momentum. The strategy blends both **mean-reversion** and **momentum-based** strategies using indicators such as SMA50, Bollinger Bands, and volume analysis. Positions are started with entry signals that correspond to price departures and confirmation breakouts with clearly defined stop-loss and take-profit conditions. The simulation results indicate that by employing both the strategies in combination, decision-making and returns are maximized under varying market conditions.
 
-# Introduction
+# 1. Introduction
 
 In the context of Vietnam's fast-growing financial market, VN30 Index Futures (VN30F1M) trading is not only a moneymaking prospect but also a money-draining risk due to its volatility and high liquidity. This project was motivated by the need to develop a rule-based trading strategy that can reliably capitalize on price trends, particularly **mean reversion** and **momentum breakout activity** observed across technical indicators like moving averages and Bollinger Bands.
 
 To achieve this, we applied a **mean-reversion** and **momentum-based** hybrid trading strategy, experimented through extensive backtesting against historical market data. Our algorithm incorporates position sizing, take-profit and stop-loss rules, and performance metrics such as Sharpe ratio and maximum drawdown. The aim of the project is to identify and optimize trading parameters that yield stable and profitable results, thus helping algorithmic traders make informed decisions in the VN30F1M futures market.
 
-# Trading algorithm process
+# 2. Trading algorithm process
 
 ## Trading Hypotheses
 
 The working hypothesis for this project is that VN30F1M price action exhibits both mean-reverting and momentum breakout properties. That is, whenever prices drift far from the 50-period Simple Moving Average (SMA50), they will return to the mean. But if the price breaks out of a significant resistance or support level on high volume, it will persist in the breakout direction. These observations provided the foundation for the development of a dual-strategy system that employs both mean-reversion and momentum signals to determine trades.
+
+- Independent variable: VN30F1M with at 1-minute intervals
+
+- Dependable variables:
+  
+  - ![equation](https://latex.codecogs.com/png.image?\dpi{110}SMA(n)=(P_t&plus;P_{t-1}&plus;...&plus;P_{t-n&plus;1})\div&space;5)
 
 ## Data Collection and Processing
 
@@ -39,7 +45,7 @@ To improve performance, we used **Optuna**, which is a hyperparameter optimizati
 
 After optimization, the trading strategy was backtested on out-of-sample 2023 data to test its ability to generalize. This out-of-sample test mimicked real-world deployment and ensured that the optimized parameters had the ability to perform outside of the training window. It was discovered that the model continued to produce a competitive Sharpe ratio and profitable trade results, confirming the robustness of the dual-strategy approach and the effectiveness of parameter tuning.
 
-# Implementation
+# 3. Implementation
 
 **Requirements:** This implementation requires `pip` to work properly
 
@@ -107,7 +113,7 @@ Enter `y` will automatically install all the required libraries and proceed to t
 Choose an option (1-4):
 ```
 
-# Results
+# 4. Results
 
 ## Data collection
 
