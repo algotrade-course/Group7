@@ -173,6 +173,10 @@ Max Drawdown: -0.1457418178661343
 
 ![in_sample_default_Drawdown](graph/in_sample_original_drawdown.png)
 
+**Figure 6: The Distribution of standardized minute returns (Z-Score)**
+
+![in_sample_default_Drawdown](graph/in_sample_original_zscore.png)
+
 ### Out sample backtesting
 
 The testing result with default parameters and the initial balance of 40,000,000VND:
@@ -190,13 +194,17 @@ Annualized Sharpe Ratio: 4.9674287360240275
 Max Drawdown: -0.015752822662429847
 ```
 
-**Figure 6: The PnL value over time**
+**Figure 7: The PnL value over time**
 
 ![out_sample_default_PnL](graph/out_sample_original_PnL.png)
 
-**Figure 7: The Drawdown value over time**
+**Figure 8: The Drawdown value over time**
 
 ![in_sample_default_Drawdown](graph/out_sample_original_drawdown.png)
+
+**Figure 9: The Distribution of standardized minute returns (Z-Score)**
+
+![in_sample_default_Drawdown](graph/out_sample_original_zscore.png)
 
 ## Finetuning
 
@@ -215,14 +223,30 @@ After using in-sample data on finetuning with 100 trial and the initial balance 
 }
 ```
 
-**Figure 8: The Optuna trials**
+**Figure 10: The Optuna trials**
 
 ![in_sample_diff](graph/optuna-trials.png)
 
-**Figure 9: The PnL value over time different on in sample data**
+**Figure 11: The PnL value over time different on in sample data**
 
 ![in_sample_diff](graph/in_sample_diff.png)
 
-**Figure 10: The PnL value over time different on out sample data**
+**Figure 12: The PnL value over time different on out sample data**
 
 ![in_sample_diff](graph/out_sample_diff.png)
+
+**Figure 13: The Drawdown value over time with optimized parameters on in sample data**
+
+![in_sample_diff](graph/in_sample_optimized_drawdown.png)
+
+**Figure 14: The Drawdown value over time with optimized parameters on out sample data**
+
+![in_sample_diff](graph/out_sample_optimized_drawdown.png)
+
+**Figure 15: The Distribution of standardized minute returns (Z-Score) with optimized parameters on in sample data**
+
+![in_sample_diff](graph/in_sample_optimized_zscore.png)
+
+**Figure 16: The Distribution of standardized minute returns (Z-Score) with optimized parameters on out sample data**
+
+![in_sample_diff](graph/out_sample_optimized_zscore.png)
