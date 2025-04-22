@@ -130,11 +130,18 @@ python -m venv myenv
 
 **2. Activate the virtual environment**
 
-- For Windows:
-
-```bash
-myenv\Scripts\activate
-```
+- For Windows, there are 2 methods:
+  - When using **Command Prompt (CMD)**:
+    
+    ```
+    .\myenv\Scripts\activate.bat
+    ```
+  
+  - When using **PowerShell**:
+    
+    ```
+    .\myenv\Scripts\Activate.ps1
+    ```
 
 - For Linux/MacOS:
 
