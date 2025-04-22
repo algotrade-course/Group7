@@ -177,7 +177,7 @@ Enter `y` will automatically install all the required libraries and proceed to t
 2. Run Finetuning
 3. Run Backtesting
 4. Quit
-Choose an option (1-4):
+Enter your choice (1-4): 
 ```
 
 ## Data Collection
@@ -220,7 +220,7 @@ Choosing `Run Finetuning` option in the Main Menu will take the user to the Fine
 1. Run fine-tuning
 2. Show dot plot of trials
 3. Back to main menu
-Enter your choice: 
+Enter your choice (1-3): 
 ```
 
 The Fine-tuning Menu lets the user choose between executing the fine-tuning process (which will be discussed further in a later section) and plotting a dot graph comparing the values of each trial taken. Note that option `2.` can only be executed after the user has run an optimization section in this run of the program.
@@ -235,6 +235,7 @@ Choosing `Run Backtesting` option in the Main Menu will take the user to the Bac
 2. Out-of-sample testing
 3. Back to main menu
 4. Quit
+Enter your choice (1-4): 
 ```
 
 Both In-sample and Out-of-sample data can be tested with both original and the latest optimized values. In addition, user can view graph showing difference in **Net Asset Value Over Time** between original and optimized parameters:
@@ -248,6 +249,7 @@ Both In-sample and Out-of-sample data can be tested with both original and the l
 3. plot the different of original vs optimized backtesting
 4. Go back
 5. Quit
+Enter your choice (1-5): 
 ```
 
 - Out-of-sample Testing menu:
@@ -259,6 +261,7 @@ Both In-sample and Out-of-sample data can be tested with both original and the l
 3. plot the different of original vs optimized backtesting
 4. Go back
 5. Quit
+Enter your choice (1-5): 
 ```
 
 Backtesting will require the user to enter an initial balance in VND. After the backtest process, user can review the result of the algorithm via a variety of graph options:
@@ -269,6 +272,7 @@ Backtesting will require the user to enter an initial balance in VND. After the 
 3. View standardized minutely returns distribution
 4. Go back
 5. Quit
+Enter your choice (1-5): 
 ```
 
 # 5. In-sample Backtesting
