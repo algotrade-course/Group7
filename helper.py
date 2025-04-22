@@ -7,7 +7,14 @@ import json
 import numpy as np
 
 import matplotlib
-matplotlib.use("Qt5Agg")
+
+# Choose non-GUI backend if running in a headless environment
+if (
+    os.name != 'nt' and os.environ.get('DISPLAY', '') == ''
+) or (
+    sys.platform == 'darwin' and os.environ.get('TERM_PROGRAM') == 'vscode'
+):
+    matplotlib.use("Qt5Agg")
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
