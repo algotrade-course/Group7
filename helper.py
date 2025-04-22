@@ -131,7 +131,7 @@ def plot_standardized_minute_returns_distribution(nav_over_time):
 
     # Plot the improved histogram
     plt.figure(figsize=(12, 7))
-    plt.hist(z_returns_filtered, bins=150, color='skyblue', edgecolor='black', alpha=0.75)
+    plt.hist(z_returns_filtered, bins=20, color='skyblue', edgecolor='black', alpha=0.75)
 
     plt.axvline(0, color='black', linestyle='-', linewidth=1.5, label='Mean (Z=0)')
     plt.axvline(1, color='gray', linestyle='--', label='+1 STD (Z=1)')
