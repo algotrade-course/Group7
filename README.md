@@ -41,7 +41,7 @@ In sumary, When the price deviates signicantly from the MA50 line, it tends to r
     
     - If $P_t$ is lower than Lower Bollinger Band and $P_t$ is more than 2% below SMA(n), open a long position.
     
-    - If P_t is higher than Upper Bollinger Band and P_t is more than 2% above SMA(n), open a short position.
+    - If $P_t$ is higher than Upper Bollinger Band and $P_t$ is more than 2% above SMA(n), open a short position.
   
   - **Momentum entry (Breakout confirmation):**
     
@@ -51,9 +51,9 @@ In sumary, When the price deviates signicantly from the MA50 line, it tends to r
     
     - Average volume (20): The average volume over the past 20 periods.
     
-    - If $P_t>$ Key resistance level with $V_t>1.5 \ \cdot \ $Average Volume (20), open a long position.
+    - If $P_t>$ Key resistance level with $V_t>$ 1.5 $\cdot$ Average Volume (20), open a long position.
     
-    - If $P_t<$ Key support level with $V_t>1.5 \ \cdot \ $ Average Volume (20), open a short position.
+    - If $P_t<$ Key support level with $V_t>$ 1.5 $\cdot$ Average Volume (20), open a short position.
 
 - **Trade size:** 1 contract per position.
 
@@ -252,11 +252,40 @@ Both In-sample and Out-of-sample data can be tested with both original and the l
 5. Quit
 ```
 
+Backtesting will require the user to enter an initial balance in VND. After the backtest process, user can review the result of the algorithm via a variety of graph options:
 
+```
+1. View the Net Asset Value (NAV) over time graph
+2. View the Drawdown over time graph
+3. View standardized minutely returns distribution
+4. Go back
+5. Quit
+```
 
 # 5. In-sample Backtesting
 
 Backtesting was performed using in-sample 2021–2022 data in order to test the algorithm with known parameters. With default settings, we checked significant metrics such as cumulative return, trade statistics, and portfolio volatility. The outcome showed the peaks and troughs of the initial settings of the strategy and gave a point of reference for subsequent optimization. This ensured that hypothesis-based rules could generate trades with potential profitability in a well-known environment.
+
+#### Parameters
+
+| Parameters                         | Value        | Status             | Description                                                        |
+| ---------------------------------- | ------------ | ------------------ | ------------------------------------------------------------------ |
+| `SMA_WINDOW_LENGTH`                | 50           | fixed, optimizable | Lookback period for calculating the Simple Moving Average.         |
+| `TAKE_PROFIT_THRES_MEAN_REVERSION` | 5            | fixed, optimizable | Profit threshold for exiting mean reversion trades.                |
+| `TAKE_PROFIT_THRES_MOMENTUM`       | 10           | fixed, optimizable | Profit threshold for exiting momentum-based trades.                |
+| `CUT_LOSS_THRES_MEAN_REVERSION`    | 5            | fixed, optimizable | Stop-loss threshold for mean reversion strategy.                   |
+| `CUT_LOSS_THRES_MOMENTUM`          | 4            | fixed, optimizable | Stop-loss threshold for momentum strategy.                         |
+| `initial_balance`                  | (customized) | customizable       | Starting capital for the backtest or simulation.                   |
+| `BB_BOUND`                         | 0.02         | fixed              | Threshold distance from Bollinger Bands used in trading decisions. |
+| `VOLUME`                           | 1.5          | fixed              | Trade volume (in standardized units).                              |
+| `margin ratio`                     | 0.175        | fixed              | Margin requirement ratio for leveraged trading.                    |
+| `ar_ratio`                         | 0.8          | fixed              | Asset ratio for risk or capital distribution.                      |
+| `multiplier`                       | 100000       | fixed              | Multiplier to convert points into VND                              |
+| `point_fee`                        | 0.47         | fixed              | Fee charged per point or trade unit.                               |
+
+
+
+#### Evaluation metrics
 
 # 6. Optimization
 
