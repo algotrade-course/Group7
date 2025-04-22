@@ -57,7 +57,7 @@ def main_menu():
         print("3. Run Backtesting")
         print("4. Quit")
 
-        choice = input("Choose an option (1-4): ").strip().lower()
+        choice = input("Enter your choice (1-4): ").strip().lower()
 
         if choice == "1":
             print("Initiating all data...")

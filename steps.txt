@@ -1,5 +1,0 @@
-*turn on terminal*
-step 1 (move to the right path): cd Downloads -> cd Group7
-step 2 (create env): python -m venv myenv
-step 3 (activate env): myenv\Scripts\activate
-step 4 (run program): python main.py

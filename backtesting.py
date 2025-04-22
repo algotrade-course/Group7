@@ -71,7 +71,7 @@ def menu():
             print("Exiting program.")
             exit()
         else:
-            print("Invalid choice. Please enter an interger from 1 to 4.")
+            print("Invalid choice. Please try again.")
             continue
 
         # Main menu for parameter selection
@@ -117,11 +117,11 @@ def menu():
                 print("Exiting program.")
                 exit()
             else:
-                print("Invalid choice. Please enter an interger from 1 to 5.")
+                print("Invalid choice. Please try again.")
                 continue
 
             try:
-                initial_balance = float(input("Enter the initial balance in VND (e.g., 100000): ").strip())
+                initial_balance = float(input("Enter the initial balance in VND (>30000000 is recommended for better results): ").strip())
             except ValueError:
                 print("Invalid input for initial balance. Please enter a numeric value.")
                 continue

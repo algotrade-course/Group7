@@ -82,7 +82,7 @@ def menu():
         print("2. Show dot plot of trials")
         print("3. Back to main menu")
 
-        user_input = input("Enter your choice: ").strip().lower()
+        user_input = input("Enter your choice (1-3): ").strip().lower()
 
         if user_input == "3":
             print("Returning to main menu...")

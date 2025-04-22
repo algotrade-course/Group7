@@ -2,6 +2,7 @@
 
 - Dương Phúc Nguyên - 21125124
 - Nguyễn Huỳnh Việt Thống - 21125140
+- Nguyễn Hữu Hào - 21125160
 
 # 0. Abstract
 
@@ -131,6 +132,7 @@ python -m venv myenv
 **2. Activate the virtual environment**
 
 - For Windows, there are 2 methods:
+  
   - When using **Command Prompt (CMD)**:
     
     ```
