@@ -93,7 +93,7 @@ The trading logic resides in the `strategy.py` file. It inspects the market cond
 
 This algorithm is part of a downloadable GitHub repository project that can be executed directly from the terminal. The implementation is modular, organized into 8 separate components, each contained within its own `.py` file for clarity and maintainability. This project consists of:
 
-- `main.py`: Main executable file with the program’s menu and library installation setup.
+- `[main.py](main.py)`: Main executable file with the program’s menu and library installation setup.
 
 - `data_prep.py`: Loads and formats data, splits it into in-sample/out-of-sample sets, and resets optimized values.
 
@@ -111,16 +111,16 @@ This algorithm is part of a downloadable GitHub repository project that can be e
 
 ## Program Setup
 
-**Requirements:** This implementation requires `pip` to work properly
+**Requirements:** This implementation requires `pip` to work properly.
 
-#### Step 1: Clone project's repository
+### Step 1: Clone project's repository
 
 ```bash
 git clone https://github.com/algotrade-course/Group7.git
 cd Group7
 ```
 
-#### Step 2: Set up Python virtual environment
+### Step 2: Set up Python virtual environment
 
 **1. Create the virtual environment**
 
@@ -142,7 +142,7 @@ myenv\Scripts\activate
 source myenv/bin/activate
 ```
 
-#### Step 3: Start program
+### Step 3: Start program
 
 **1. Start the program**
 
@@ -266,7 +266,7 @@ Backtesting will require the user to enter an initial balance in VND. After the 
 
 Backtesting was performed using in-sample 2021–2022 data in order to test the algorithm with known parameters. With default settings, we checked significant metrics such as cumulative return, trade statistics, and portfolio volatility. The outcome showed the peaks and troughs of the initial settings of the strategy and gave a point of reference for subsequent optimization. This ensured that hypothesis-based rules could generate trades with potential profitability in a well-known environment.
 
-#### Parameters
+## Parameters
 
 | Parameters                         | Value        | Status             | Description                                                        |
 | ---------------------------------- | ------------ | ------------------ | ------------------------------------------------------------------ |
@@ -283,13 +283,133 @@ Backtesting was performed using in-sample 2021–2022 data in order to test the 
 | `multiplier`                       | 100000       | fixed              | Multiplier to convert points into VND                              |
 | `point_fee`                        | 0.47         | fixed              | Fee charged per point or trade unit.                               |
 
+## Decision Making
 
+The algorithm operates on a bar-by-bar basis, using a sliding window defined by `SMA_WINDOW_LENGTH` to calculate technical indicators such as **Simple Moving Average (SMA)** and **Bollinger Bands**. It opens positions based on several conditions:
 
-#### Evaluation metrics
+- **Mean Reversion Entry**: A long position is opened when price falls below the lower Bollinger Band and is significantly under the SMA. A short position is triggered when price rises above the upper Bollinger Band and is well above the SMA.
+
+- **Momentum Entry**: A long position is opened when price breaks above resistance accompanied by strong volume. A short position is opened when price drops below support with high volume.
+
+Once a position is entered, the strategy continuously monitors the price to determine an appropriate exit. Exits are triggered by one of the following:
+
+- Profit reaching pre-defined thresholds (`TAKE_PROFIT_THRES_MEAN_REVERSION`, `TAKE_PROFIT_THRES_MOMENTUM`)
+
+- Loss exceeding cut-loss thresholds (`CUT_LOSS_THRES_MEAN_REVERSION`, `CUT_LOSS_THRES_MOMENTUM`)
+
+- Margin call-like condition: balance dropping below 10% of required margin deposit
+
+## Evaluation metrics
+
+- **Main evaluation metrics:**
+
+| Metrics                 | Description                                           | Output Type |
+| ----------------------- | ----------------------------------------------------- | ----------- |
+| Final Balance           | The finalized capital after all trades                | Float Value |
+| Accumulated Return      | Overall percentage gain/loss from the initial balance | Float Value |
+| Sharpe Ratio            | Risk-adjusted return over the simulation period       | Float Value |
+| Annualized Sharpe Ratio | Scaled Sharpe to reflect expected yearly performance  | Float Value |
+| Maximum Drawdown (MDD)  | Largest peak-to-trough drop, indicating risk exposure | Float Value |
+| NAV Over Time           | Net Asset Value over the in-sample time range         | Line Graph  |
+| Drawdown Over Time      | Drawdown value over the in-sample time range          | Line Graph  |
+
+- **Extra values:**
+  
+  - Total trades executed (`int`)
+  
+  - Number of win and loss trades (`int`)
+  
+  - Profit/Loss per trades (`int`)
+
+## In-sample Backtesting Results
+
+The testing result with default parameters with the initial balance of 40,000,000 (VND):
+
+```
+Initial Balance: 40000000.0
+Final Balance: 341921999.99999994
+Win Rate: 83.33333333333334
+Total Trades: 144
+Winning Trades: 120
+Losing Trades: 24
+Accumulated Return: 7.548049999999998
+Sharpe Ratio: 0.013550733578558087
+Annualized Sharpe Ratio: 3.5205838556838356
+Max Drawdown: -0.1457418178661343
+```
+
+**Figure 4: The PnL value over time**
+
+![in_sample_default_PnL](graph/in_sample_original_PnL.png)
+
+**Figure 5: The Drawdown value over time**
+
+![in_sample_default_Drawdown](graph/in_sample_original_drawdown.png)
+
+**Figure 6: The Distribution of standardized minute returns (Z-Score)**
+
+![in_sample_default_Drawdown](graph/in_sample_original_zscore.png)
 
 # 6. Optimization
 
 To improve performance, we used **Optuna**, which is a hyperparameter optimization library. The algorithm tuned five key parameters: **SMA window length, take-profit thresholds, and stop-loss thresholds for mean-reversion and momentum strategies.** The goal in each trial was to maximize the Sharpe ratio for the in-sample data. The best parameter set was saved to a JSON file `best_trial_result.json` and used for further testing. This enhanced risk-adjusted returns by a significant margin and helped tune the model to market dynamics.
+
+After entering the finetuning section instructed in **Implementation** section, user will need to enter the amount of trials they want to be executed. For demonstration, we will be using 100 trials.
+
+## Optimization Objective
+
+To enhance the strategy’s performance, we run an optimization process that seeks to **maximize the Sharpe Ratio**. The Sharpe Ratio is chosen as the objective because it reflects **risk-adjusted return**—a higher Sharpe suggests better performance per unit of volatility, making it ideal for evaluating strategies where both profitability and stability matter.
+
+Each trial will execute the trading algorithm with a different set of parameters sampled from predefined ranges. These parameters directly influence the strategy’s entry/exit decisions and overall trade behavior:
+
+| Parameter              | Range       | Step Size |
+| ---------------------- | ----------- | --------- |
+| SMA Window Length      | [30, 100]   | 1         |
+| Take Profit (Mean Rev) | [3.0, 10.0] | 0.5       |
+| Take Profit (Momentum) | [5.0, 15.0] | 0.5       |
+| Cut Loss (Mean Rev)    | [3.0, 10.0] | 0.5       |
+| Cut Loss (Momentum)    | [2.0, 8.0]  | 0.5       |
+
+Each trial loads the in-sample data, applies the parameter configuration, and computes the **Sharpe Ratio** based on the resulting trading performance. The optimization uses a **Tree-structured Parzen Estimator (TPE)** sampler to intelligently explore the parameter space and converge faster to the best-performing configurations.
+
+## Optimization Results
+
+After using in-sample data for fine-tuning with 100 trials and the initial balance of 40,000,000 (VND), the optimized parameters are:
+
+```
+{
+    "value": 0.014838635780793847,
+    "params": {
+        "sma_window": 64,
+        "tp_mean_rev": 10.0,
+        "tp_momentum": 12.0,
+        "sl_mean_rev": 6.5,
+        "sl_momentum": 7.5
+    }
+}
+```
+
+**Figure 7: The Optuna trials**
+
+![in_sample_diff](graph/optuna-trials.png)
+
+**Figure 8: NAV over time difference on Before vs After tuning of in-sample data**
+
+![in_sample_diff](graph/in_sample_diff.png)
+
+**Figure 8 + 9: Drawdown over time Before vs After tuning of in-sample data comparison**
+
+![in_sample_default_Drawdown](graph/in_sample_original_drawdown.png)
+
+![in_sample_default_Drawdown](graph/in_sample_optimized_drawdown.png)
+
+**Figure 10 + 11: (Standardized) Minutely Returns Distribution Before vs After tuning of in-sample data comparison**
+
+![in_sample_default_Drawdown](graph/in_sample_original_zscore.png)
+
+![in_sample_default_Drawdown](graph/in_sample_optimized_zscore.png)
+
+
 
 # 7. Out-of-sample Backtesting
 
