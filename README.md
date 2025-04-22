@@ -94,7 +94,7 @@ The trading logic resides in the `strategy.py` file. It inspects the market cond
 
 This algorithm is part of a downloadable GitHub repository project that can be executed directly from the terminal. The implementation is modular, organized into 8 separate components, each contained within its own `.py` file for clarity and maintainability. This project consists of:
 
-- `[main.py](main.py)`: Main executable file with the program’s menu and library installation setup.
+- `main.py`: Main executable file with the program’s menu and library installation setup.
 
 - `data_prep.py`: Loads and formats data, splits it into in-sample/out-of-sample sets, and resets optimized values.
 
