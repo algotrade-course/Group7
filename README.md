@@ -466,3 +466,9 @@ Max Drawdown: -0.016528629306944747
 ![in_sample_default_Drawdown](graph/out_sample_optimized_zscore.png) 
 
 # 8. Conclusion
+
+This project successfully developed a dual-strategy trading algorithm for VN30 Index Futures using a combination of mean-reversion and momentum-based techniques. Systematic design, backtesting, and parameter tuning led to excellent performance for the strategy in both in-sample (2021–2022) and out-of-sample (2023) data.
+
+One significant finding is that fine-tuning of strategy parameters with Optuna is very powerful. Optimization significantly improved trading performance: not only were Sharpe ratios better, but end-of-trading balances, winning fractions, and drawdown signatures also exhibited measurable gains. These gains validate the hypothesis that technical indicators combined with sensitively tuned thresholds jointly can more reliably identify diverse market behaviors.
+
+The approach proved effective in both controlled (in-sample) and unseen (out-of-sample) environments, validating its ability to generalize and deploy effectively. The future could involve extending the model to other markets or incorporating additional risk controls and machine learning-driven signal enhancement.
