@@ -56,6 +56,24 @@ In sumary, When the price deviates signicantly from the MA50 line, it tends to r
     
     - If $P_t<$ Key support level with $V_t>$ 1.5 $\cdot$ Average Volume (20), open a short position.
 
+- **Take Profit:**
+  
+  - Close the Mean Reversion position when the price reverts to SMA(50) or achieves a profit of 5 points.
+  
+  - Close the Momentum position when the price moves 10 points in the breakout direction.
+
+- **Stop Loss:**
+  
+  - Close the Mean Reversion position if the price moves 5 points further away from SMA(50).
+  
+  - Close the Momentum position if the breakout fails and price returns to its previous range (stop loss at -4 points).
+
+- **End-of-day Close:**
+  
+  - No positions remain overnight.
+  
+  - If there are open positions at the ATC (At-the-Close) session, close them using an ATC order.
+
 - **Trade size:** 1 contract per position.
 
 # 3. Data
