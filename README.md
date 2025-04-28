@@ -1,3 +1,5 @@
+![Static Badge](https://img.shields.io/badge/PLUTUS-75%25-darkgreen)
+
 # Group 07
 
 - Dương Phúc Nguyên - 21125124
